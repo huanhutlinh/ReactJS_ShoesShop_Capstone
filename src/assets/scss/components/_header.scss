@@ -1,0 +1,35 @@
+@import "../theme/variables";
+
+header{
+    .top_header{
+        background-color: $bg-c1-dark;
+       .logo{
+        a{
+            img{
+
+            }
+        }
+       }
+       .user-login{
+        
+        a{
+            color: $text-c1-light;
+            font-size: 1rem;
+            font-weight: 500;
+            i{
+
+            }
+            p{
+
+            }
+        }
+       } 
+    }
+    .navigation{
+        .nav-wrap{
+            a{
+
+            }
+        }
+    }
+}
