@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import './assets/scss/style.scss'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import HomeTemplate from './templates/HomeTemplate';
@@ -25,7 +22,7 @@ root.render(
         <Route index element={<Home/>}></Route>
         <Route path='register' element={<Register/>}></Route>
         <Route path='login' element={<Login/>}></Route>
-        <Route path='cart' element={<Carts/>}></Route>
+        <Route path='carts' element={<Carts/>}></Route>
         <Route path='profile' element={<Profile/>}></Route>
         <Route path='search' element={<Search/>}></Route>
         <Route path='detail'>

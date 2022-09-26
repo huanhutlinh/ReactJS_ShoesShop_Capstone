@@ -47,8 +47,6 @@ $xxl: 1400px;
   color: $fc;
 }
 
-;
-
 @mixin res-sm {
   @media (max-width: #{$sm}) {
     @content;
@@ -77,4 +75,11 @@ $xxl: 1400px;
   @media (max-width: #{$xxl}) {
     @content;
   }
+}
+
+@mixin btnStyle ($w, $h, $bgc, $bd: 1px solid transparent) {
+  width: $w;
+  height: $h;
+  background-color: $bgc;
+  border: $bd;
 }

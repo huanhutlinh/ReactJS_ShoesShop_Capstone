@@ -1,35 +1,40 @@
 @import "../theme/variables";
 
-header{
-    .top_header{
-        background-color: $bg-c1-dark;
-       .logo{
-        a{
-            img{
-
+.navbar{
+    background-color: $bg-c1-light !important;
+    .container{
+        background-color: $bg-c1-dark !important;
+        .navbar-toggler{
+            background-color: $bg-c1-dark !important;
+            .menu__bar{
+                color: $text-c1-light !important;
             }
         }
-       }
-       .user-login{
-        
-        a{
-            color: $text-c1-light;
-            font-size: 1rem;
-            font-weight: 500;
-            i{
-
-            }
-            p{
-
+        .collapse{
+            .navbar-nav{
+                .nav-item{
+                    // border: 1px solid $bg-c1-light !important;
+                    @include res-sm{
+                        border-bottom: 1px solid $bg-c1-light !important;
+                        
+                    }
+                    .nav-link{
+              
+                    }
+                }
             }
         }
-       } 
     }
-    .navigation{
-        .nav-wrap{
-            a{
+}
 
-            }
+.navigation{
+    background-color: $bg-c1-light !important;
+    .container{
+        .nav_wrap{
+            font-size: $text-2xl;
+            font-weight: $text-light;
+            line-height: 24.2px;
         }
+
     }
 }
