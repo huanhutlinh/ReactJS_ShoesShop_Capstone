@@ -27,7 +27,7 @@
                     }
                     .footer{
                         .btn-buyNow{
-                            width: calc(366px / 2);
+                            width: calc(376px / 2);
                             padding: 15px;
                             background: $bg-c1-primary;
                             @include text(24px, $text-regular, $text-c1-dark);
@@ -36,16 +36,16 @@
                                 padding: 15px;
                             };
                             @include res-md  {
-                                width: calc(346px / 2);
+                                width: calc(349.6px / 2);
                                 padding: 15px;
                             };
                             @include res-sm  {
-                                width: calc(509px / 2);
+                                width: calc(533.2px / 2);
                                 padding: 15px;
                             };
                         }
                         .btn-price{
-                            width: calc(366px / 2);
+                            width: calc(376px / 2);
                             padding: 15px;
                             background: $bg-c4-dark;
                             @include text(24px, $text-regular, $text-c1-dark);
@@ -54,11 +54,11 @@
                                 padding: 15px;
                             };
                             @include res-md  {
-                                width: calc(346px / 2);
+                                width: calc(349.6px / 2);
                                 padding: 15px;
                             };
                             @include res-sm  {
-                                width: calc(509px / 2);
+                                width: calc(533.2px / 2);
                                 padding: 15px;
                             };
                         }

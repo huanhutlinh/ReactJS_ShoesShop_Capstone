@@ -1,0 +1,92 @@
+@import './../theme/variables';
+@import './../components/productfeature';
+.container{
+    .product-detail{
+        height: 450px;
+        @include res-md{
+            height: 740px;
+        }
+        .row{
+            .product-img{
+                padding-left: calc(267px / 2);
+                padding-right: calc(267px / 2);
+                margin-bottom: 65px;
+                .product-img-around{
+                    height: 100%;
+                    padding-top: 110px;
+                    padding-left: 75px;
+                    background-color: $bg-c2-light;
+                    @include res-lg {
+                        padding-left: 30px;
+                    }
+                    @include res-md {
+                        padding-left: 100px;
+                        padding-top: 50px;
+                        padding-bottom: 50px;
+                    }
+                    @include res-sm {
+                        padding-left: 18px;
+                    }
+                    img{
+                        max-width: 250px;
+                    }
+                }
+    
+            }
+            .product-info{
+                .product-item{
+                    .title{
+                        @include text($text-3xl, $text-light, $text-c1-dark);
+                        line-height: 36.31 px;
+                    }
+                    .description{
+                        @include text($text-base, $text-regular, $text-c3-dark);
+                        line-height: 19.36px;
+                    }
+                    .status{
+                        @include text(24px , 500 , $text-c1-status);
+                        line-height: 29.05px;
+                    }   
+                    .size{
+                        .btnSize{
+                            pointer-events: none;
+                            background: $bg-c6-dark;
+                            border: none;
+                            @include text(24px , $text-semibold, $text-c1-dark);
+                        }
+                    }  
+                    .price{
+                        @include text($text-3xl , $text-semibold, $text-c1-red);
+                        line-height: 36px;
+                    } 
+    
+                }
+                .quantity{
+                    .btnNumber{
+                       background: $bg-c1-gradient;
+                       border: none;
+                       width: 45px;
+                       height: 45px;
+                       font-size: 25px;
+                       line-height: 15px;
+                    }
+                    .volume{
+                        width: 55px;
+                        height: 45px;
+                        @include text($text-3xl, $text-regular, $text-c1-dark);
+                    }
+                }
+                .btnAdd{
+                   background: $bg-c2-gradient;
+                   border: none;
+                   width: 175px;
+                   height: 64px;
+                   @include text(24px, 500, $bg-c2-light);
+                }
+            }
+        }
+
+    }
+
+
+}

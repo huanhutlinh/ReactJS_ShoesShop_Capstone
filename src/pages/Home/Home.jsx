@@ -4,7 +4,7 @@ import ProductFeature from "./ProductFeature";
 
 export default function Home() {
   return (
-    <div className="container">
+    <div>
       {/* Carousel */}
       <Carousel/>
       {/* ProductFeature */}
