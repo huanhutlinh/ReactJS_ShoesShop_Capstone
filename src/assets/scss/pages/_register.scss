@@ -1,0 +1,97 @@
+.register {
+    // h3 {}
+
+    .register-form {
+        .form-group {
+            .user-label {
+                display: block;
+                font-size: $text-xl;
+                font-weight: 500;
+            }
+
+            .user-input {
+                width: 60%;
+                padding: 4px 8px;
+                background-color: $bg-c4-dark;
+                border: none;
+                border-radius: 5px;
+            }
+
+            .gender-title {
+                font-size: $text-xl;
+                font-weight: 500;
+            }
+
+            .gender-label {
+                padding-left: 35px;
+                position: relative;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+
+                .gender-input {
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                    width: 25px;
+                    height: 25px;
+                    left: 0;
+                    z-index: 1;
+
+                    &:checked~.checkmark {
+                        background-color: #6200EE;
+                    }
+
+                    &:checked~.checkmark::after {
+                        display: block;
+                    }
+                }
+
+                .checkmark {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 25px;
+                    width: 25px;
+                    background-color: #eee;
+                    border-radius: 50%;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        display: none;
+
+                        top: 5px;
+                        left: 5px;
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        background: white;
+                    }
+                }
+            }
+
+            .valid-notice {
+                margin: 0;
+                font-size: $text-xs;
+            }
+
+            .submit-btn {
+                background-color: #6200EE;
+                color: $text-c1-light;
+                border: none;
+                padding: 12px 28px;
+                border-radius: 28px;
+                font-size: $text-base;
+                font-weight: 500;
+
+                &:hover {
+                    background-color: #5b1b70;
+                }
+            }
+
+
+        }
+    }
+}
