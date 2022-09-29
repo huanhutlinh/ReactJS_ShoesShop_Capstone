@@ -66,7 +66,7 @@ export default function Carousel() {
               <div className="carousel-product">
                 <h3>Product Name</h3>
                 <p>Product Description</p>
-                <button className="btn btn-warning rounded-0">BuyNow</button>
+                <button className="btn btn-warning rounded-0 text-white">BuyNow</button>
               </div>
             </div>
           </div>

@@ -2,38 +2,61 @@
 .container{
     .carousel{
         height: 258px;
-        border: 1px solid red;
         margin-bottom: 30px;
+        @include res-sm{
+            height: 258px;        
+        }
         .carousel-inner{
             .carousel-item{
                 // height: 20rem;
                 // border: 1px solid black;
                 // background: #77D;
+
                 .carousel-content{
                     .carousel-img{
                         width: 60%;
-                        border: 1px solid black;
                         padding-top: 50px;
                         padding-bottom: 50px;
                         padding-left: 150px;
+                        @include res-sm{
+                            padding-left: 0;
+                            padding-right: 20px;
+                        }
+                        @include res-md{
+                            padding-left: 30px;
+                            padding-right: 60px;
+                        }
                         img{
                            height: 50%;
                            width: 50%;
+                           @include res-sm{
+                                width: 100%;
+                            }
+                            @include res-md{
+                                width: 100%;
+                            }
                         }
 
                     }
                     .carousel-product{
-                        border: 1px solid black;
                         width: 40%;
-        
                         h3{
-                            @include text($text-4xl, $text-light, $text-c1-dark)
+                            @include text($text-4xl, $text-light, $text-c1-dark);
+                            @include res-sm{
+                                @include text($text-3xl, $text-light, $text-c1-dark);
+                            }
                         }
                         p{
-                            @include text($text-2xl, $text-light, $text-c1-dark)
+                            @include text($text-2xl, $text-light, $text-c1-dark);
+                            @include res-sm{
+                                @include text($text-2xl, $text-light, $text-c1-dark);
+                            }
                         }
                         button{
-                            @include btnStyle(150px, 50px, $bg-c1-primary,$bg-c1-light)
+                            @include btnStyle(150px, 50px, $bg-c1-primary,$bg-c1-light);
+                            @include res-sm{
+                                @include btnStyle(100px, 40px, $bg-c1-primary,$bg-c1-light);
+                            }
                         }
                     }
                 }
