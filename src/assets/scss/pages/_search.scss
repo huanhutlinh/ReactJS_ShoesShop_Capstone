@@ -1,0 +1,47 @@
+@import "./../theme/variables";
+@import "../components/productfeature";
+
+.container {
+  .search {
+    .search-type {
+      input {
+        width: 443px;
+        height: 54px;
+        border: none;
+        background: rgba(33, 33, 33, 0.08);
+        border-radius: 4px 4px 0px 0px;
+        padding: 16px 12px 14px 14px;
+        outline: none;
+      }
+      button {
+        width: 121px;
+        height: 48px;
+        background: #6200ee;
+        box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2);
+        border-radius: 100px;
+
+      }
+    }
+  }
+  .search-result {
+    .title-search-result{
+        background: $bg-c1-dark; 
+        padding: 10px;
+        color: $text-c1-primary;
+    }
+    .search-result-present{
+        .search-result-select{
+            p{
+                @include text($text-xl, 500, $text-c3-dark);
+            }
+            select{
+                width: 300px;
+                height: 45px;
+                // border: none;
+                // background: rgba(33, 33, 33, 0.08);
+               
+            }
+        }
+    }
+  }
+}

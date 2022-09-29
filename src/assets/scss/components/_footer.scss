@@ -1,0 +1,54 @@
+@import './../theme/variables';
+
+footer{
+    .container{
+        .top_footer{
+            .row{
+                .card_custom{
+                    .card_item_1{
+                        border-right: 1px solid rgba(222, 221, 220, 1);
+                        @include res-md {
+                            border-right: none;
+                            border-bottom: 1px solid rgba(222, 221, 220, 1);
+                        }
+                        .list{
+                            list-style: none;
+                            margin-left: -30px;
+                            font-weight: $text-semibold;
+                        }
+                    }
+                    .card_item_2{
+                        border-right: 1px solid rgba(222, 221, 220, 1);
+                        @include res-md {
+                            border-right: none;
+                            border-bottom: 1px solid rgba(222, 221, 220, 1);
+                        }
+                        .list{
+                            list-style: none;
+                            margin-left: -30px;
+                            font-weight: $text-semibold;
+                        }
+                    }
+                    .card_item_3{
+                        .list{
+                            list-style: none;
+                            margin-left: -30px;
+                            font-weight: $text-semibold;
+                        }
+                    }
+                }
+            }
+        }
+        .bottom_footer{
+            height: 74px;
+            background: #D9D9D9;
+            p{
+                font-weight: $text-regular;
+                font-size: $text-2xl;
+                @include res-sm {
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+}
