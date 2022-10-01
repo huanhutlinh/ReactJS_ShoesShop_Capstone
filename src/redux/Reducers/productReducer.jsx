@@ -24,6 +24,14 @@ const initialState = {
         "shortDescription": "The adidas Primeknit upper wraps the foot with a supportive fit that enhances movement.\r\n\r\n",
         "image": "https://shop.cyberlearn.vn/images/adidas-ultraboost-4.png"
       },
+    ],
+    productDetail: [
+      {
+        "id": 1,
+        "name": "Adidas Prophere",
+        "shortDescription": "The midsole contains 20% more Boost for an amplified Boost feeling.\r\n\r\n",
+        "image": "https://shop.cyberlearn.vn/images/adidas-prophere.png"
+      }
     ]
 }
 
@@ -36,11 +44,17 @@ const productReducer = createSlice({
             const dataProduct = action.payload;
             //Cập nhật lại state.dataProduct
             state.dataProduct = dataProduct;  
-        }
+        },
+        setProductDetailAction: (state, action) => {
+          //Lấy dữ liệu từ payload
+          const productDetail = action.payload;
+          //Cập nhật lại sate.productDetail
+          state.productDetail = productDetail;
+      },
   }
 });
 
-export const {setGetPostPageAction} = productReducer.actions
+export const {setGetPostPageAction, setProductDetailAction} = productReducer.actions
 
 export default productReducer.reducer
 /*========================== Action API ========================== */
@@ -56,4 +70,18 @@ export const getPostPageApi = (pageParams=1, pageSize=1) => {
         console.log(err);
       }
     }
+}
+
+export const getProductDetailApiAction = (idProduct) => {
+  return async dispatch => {
+    try {
+        const result = await http.get(`/Product/getbyid?id=${idProduct}`);
+        console.log('Detail Product: ',result.data.content);
+        const action = setProductDetailAction(result.data.content);
+        dispatch(action);
+    } catch (err){
+      console.log(err)
+    }
   }
+}
+
