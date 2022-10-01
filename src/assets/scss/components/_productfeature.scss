@@ -2,6 +2,10 @@
 
 .product-feature{
     .product{
+        height: 1100px;
+        @include res-md {
+            height: 1600px;
+        }
         .row{
             .product-item{
                 .card{
