@@ -80,7 +80,7 @@ export default function Detail() {
             <div className="card-body">
               <h5 className="card-title">{item?.name}</h5>
               <p className="card-text">
-                {item?.description}
+                {item?.description.length > 70 ? item?.description.slice(1,70) + '...' : item?.description}
               </p>
             </div>
             <div className="footer d-flex align-items-center">
@@ -102,7 +102,7 @@ export default function Detail() {
   };
   return (
     <>
-      <div className="container mt-5">
+      <div className="container mt-5 mb-5">
         <div className="product-detail">
           <div className="row">{renderProduct()}</div>
         </div>
