@@ -32,7 +32,8 @@ const initialState = {
         "shortDescription": "The midsole contains 20% more Boost for an amplified Boost feeling.\r\n\r\n",
         "image": "https://shop.cyberlearn.vn/images/adidas-prophere.png"
       }
-    ]
+    ],
+    productSearch: [],
 }
 
 const productReducer = createSlice({
@@ -50,11 +51,17 @@ const productReducer = createSlice({
           const productDetail = action.payload;
           //Cập nhật lại sate.productDetail
           state.productDetail = productDetail;
-      },
+        },
+        setProductSearchAction: (state, action) => {
+          //Lấy dữ liệu từ payload
+          const productSearch = action.payload;
+          //Cập nhật lại sate.productDetail
+          state.productSearch = productSearch;
+        }
   }
 });
 
-export const {setGetPostPageAction, setProductDetailAction} = productReducer.actions
+export const {setGetPostPageAction, setProductDetailAction, setProductSearchAction} = productReducer.actions
 
 export default productReducer.reducer
 /*========================== Action API ========================== */
@@ -85,3 +92,14 @@ export const getProductDetailApiAction = (idProduct) => {
   }
 }
 
+export const getProductByNameAction = (keyword) => {
+  return async dispatch => {
+    try{
+        const result = await http.get(`/Product?keyword=${keyword}`);
+        const action = setProductSearchAction(result.data.content);
+        dispatch(action);
+    }catch(err){
+      console.log(err)
+    }
+  }
+}
