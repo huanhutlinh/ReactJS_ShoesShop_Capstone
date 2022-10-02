@@ -88,11 +88,15 @@ export default function Search() {
       // console.log('arrProductDown: ',arrSort);
     }
   }, [stateSelect]);
+
+
   console.log('arrSort: ',arrSort);
   //Phan trang
   const lastPostIndex = currentPage * postPerPage; // lastPostIndex = 4
   const firstPostIndex = lastPostIndex - postPerPage; // firstPostIndex = 0
   const currentArrProduct = arrSort.slice(firstPostIndex, lastPostIndex);
+
+  console.log('currentArrProduct: ',currentArrProduct);
   return (
     <div className="container">
       <form className="search my-5" onSubmit={handleSubmit}>
