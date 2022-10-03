@@ -44,6 +44,7 @@ export const signInAPI = (userLogin) => {
 
       const action = setUserLoginAction(result.data.content);
       dispatch(action);
+      alert(result.data.message);
     } catch (err) {
       alert(err.response.data.message);
     }
