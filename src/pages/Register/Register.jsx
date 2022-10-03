@@ -43,6 +43,7 @@ export default function Register() {
           data: values,
         });
         console.log(result.data.content);
+        alert("Đăng Ký Tài Khoản Thành Công!");
       } catch (err) {
         console.log(err.response.data.message);
       }

@@ -2,50 +2,31 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { values } from "lodash";
+import { useDispatch } from "react-redux";
+import { signInAPI } from "../../redux/Reducers/userReducer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import LoginFacebook from "../../components/LoginFacebook/LoginFacebook";
 export default function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
-      name: "",
-      gender: true,
-      phone: "",
-      confirmPassw: true,
     },
     validationSchema: Yup.object().shape({
       email: Yup.string()
         .required("Email is required!")
         .email("Invalid email!"),
-      name: Yup.string().required("Name is required!"),
-      phone: Yup.string().required("Phone is required!"),
       password: Yup.string()
         .required("Password is required!")
-        .min(8, "Password must have at least 8 characters"),
-      confirmPassw: Yup.string()
-        .required("Confirm password is required!")
-        .when("password", {
-          is: (val) => (val && val.length > 0 ? true : false),
-          then: Yup.string().oneOf(
-            [Yup.ref("password")],
-            "Both password need to be the same"
-          ),
-        }),
+        .min(1, "Password must have at least 8 characters"),
     }),
-    onSubmit: async (values) => {
-      try {
-        let result = await axios({
-          url: "https://shop.cyberlearn.vn/api/Users/signup",
-          method: "POST",
-          data: values,
-        });
-        console.log(result.data.content);
-      } catch (err) {
-        console.log(err.response.data.message);
-      }
+    onSubmit: (values) => {
+      const action = signInAPI(values);
+      dispatch(action);
     },
   });
   return (
@@ -103,7 +84,7 @@ export default function Login() {
               Login
             </button>
           </div>
-          <div className="mt-2">  
+          <div className="mt-2">
             <LoginFacebook />
           </div>
         </div>
