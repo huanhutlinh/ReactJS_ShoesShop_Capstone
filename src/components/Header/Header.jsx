@@ -1,8 +1,11 @@
 import React from "react";
 import logo from "../../assets/img/logo_1.png";
 import { Link, NavLink } from "react-router-dom";
+import { getStore, getStoreJSON, USER_LOGIN } from "../../util/config";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+  const user = useSelector((state) => state.userReducer.userLogin);
   const navLinks = [
     {
       title: "Home",
@@ -61,12 +64,27 @@ export default function Header() {
                 </NavLink>
               </li>
               <li class="nav-item">
-                <NavLink
+                {/* <NavLink
                   className="nav-link d-flex align-items-center"
                   to="/login"
                 >
                   <p className="my-1">Login</p>
-                </NavLink>
+                </NavLink> */}
+                {user ? (
+                  <NavLink
+                    className="nav-link d-flex align-items-center my-1"
+                    to={"/profile"}
+                  >
+                    Hello, {user.email}!
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    className="nav-link d-flex align-items-center my-1"
+                    to={"/login"}
+                  >
+                    Login
+                  </NavLink>
+                )}
               </li>
               <li class="nav-item">
                 <NavLink
