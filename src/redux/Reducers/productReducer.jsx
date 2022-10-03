@@ -57,7 +57,7 @@ const productReducer = createSlice({
           const productSearch = action.payload;
           //Cập nhật lại sate.productDetail
           state.productSearch = productSearch;
-        }
+        },
   }
 });
 

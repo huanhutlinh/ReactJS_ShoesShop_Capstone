@@ -8,10 +8,11 @@ import SearchResult from "./SearchResult";
 import _, { set } from "lodash";
 
 let timeout = null;
+let select = 0;
 export default function Search() {
   const { productSearch } = useSelector((state) => state.productReducer);
   let arrSort = [...productSearch];
-  let [stateSelect, setStateSelect] = useState(0);
+  // let [stateSelect, setStateSelect] = useState(0);
   const dispatch = useDispatch();
   const keywordRef = useRef("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,49 +55,10 @@ export default function Search() {
     setSearchParams({ keyword: keywordRef.current });
   };
 
-  //HandleSorPrice
-  const handleSortPrice = (e) => {
-    let {value, id} = e.target;
-    setStateSelect(value);
-    // if(value == 1){
-    //   let arrProductUp = arrSort.sort((spTiepTheo, sp) => {
-    //     return spTiepTheo.price - sp.price;
-    //   })
-    //   arrSort = [...arrProductUp]
-    //   // console.log('arrProductUp: ',arrSort);
-    // }else{
-    //   let arrProductDown = arrSort.sort((spTiepTheo, sp) => {
-    //     return sp.price -  spTiepTheo.price;
-    //   })
-    //   arrSort = [...arrProductDown]
-    //   // console.log('arrProductDown: ',arrSort);
-    // }
-  }
-
-  useEffect(() => {
-    if (stateSelect == 1) {
-      let arrProductUp = arrSort.sort((spTiepTheo, sp) => {
-        return spTiepTheo.price - sp.price;
-      });
-      arrSort = [...arrProductUp];
-      // console.log('arrProductUp: ',arrSort);
-    } else {
-      let arrProductDown = arrSort.sort((spTiepTheo, sp) => {
-        return sp.price - spTiepTheo.price;
-      });
-      arrSort = [...arrProductDown];
-      // console.log('arrProductDown: ',arrSort);
-    }
-  }, [stateSelect]);
-
-
-  console.log('arrSort: ',arrSort);
   //Phan trang
   const lastPostIndex = currentPage * postPerPage; // lastPostIndex = 4
   const firstPostIndex = lastPostIndex - postPerPage; // firstPostIndex = 0
-  const currentArrProduct = arrSort.slice(firstPostIndex, lastPostIndex);
-
-  console.log('currentArrProduct: ',currentArrProduct);
+  const currentArrProduct = productSearch.slice(firstPostIndex, lastPostIndex);
   return (
     <div className="container">
       <form className="search my-5" onSubmit={handleSubmit}>
@@ -116,29 +78,9 @@ export default function Search() {
           </button>
         </div>
       </form>
-      <div className="search-result">
-        <h3 className="title-search-result">Search result</h3>
-        <div className="search-result-present my-4">
-          <div className="search-result-select">
-            <p>Price</p>
-            <select
-              className="form-select rounded-0"
-              aria-label="text-white"
-              onChange={handleSortPrice}
-            >
-              <option value="1">Ascending </option>
-              <option value="0">Descending</option>
-            </select>
-          </div>
-          <div className="search-result-items my-4 ">
-            <div className="product-feature">
-              <SearchResult productSearch={currentArrProduct} />
-            </div>
-          </div>
-        </div>
-      </div>
+      <SearchResult productSearch={currentArrProduct}/>
       <PaginationSearch
-        totalPost={arrSort.length}
+        totalPost={productSearch.length}
         postPerPage={postPerPage}
         setCurrentPage={setCurrentPage}
       />
