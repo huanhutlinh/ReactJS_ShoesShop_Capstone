@@ -25,15 +25,9 @@ const initialState = {
         "image": "https://shop.cyberlearn.vn/images/adidas-ultraboost-4.png"
       },
     ],
-    productDetail: [
-      {
-        "id": 1,
-        "name": "Adidas Prophere",
-        "shortDescription": "The midsole contains 20% more Boost for an amplified Boost feeling.\r\n\r\n",
-        "image": "https://shop.cyberlearn.vn/images/adidas-prophere.png"
-      }
-    ],
+    productDetail: [],
     productSearch: [],
+    productCart: []
 }
 
 const productReducer = createSlice({
@@ -58,10 +52,19 @@ const productReducer = createSlice({
           //Cập nhật lại sate.productDetail
           state.productSearch = productSearch;
         },
+        setProductCartAction: (state, action) => {
+          const productCart = action.payload;
+          state.productCart.push(productCart);
+        },
+        setProductDeleteAction: (state, action) => {
+          const newProductCart = action.payload;
+          state.productCart = newProductCart;
+        }
+        
   }
 });
 
-export const {setGetPostPageAction, setProductDetailAction, setProductSearchAction} = productReducer.actions
+export const {setGetPostPageAction, setProductDetailAction, setProductSearchAction, setProductCartAction, setProductDeleteAction} = productReducer.actions
 
 export default productReducer.reducer
 /*========================== Action API ========================== */
@@ -83,7 +86,7 @@ export const getProductDetailApiAction = (idProduct) => {
   return async dispatch => {
     try {
         const result = await http.get(`/Product/getbyid?id=${idProduct}`);
-        console.log('Detail Product: ',result.data.content);
+        // console.log('Detail Product: ',result.data.content);
         const action = setProductDetailAction(result.data.content);
         dispatch(action);
     } catch (err){

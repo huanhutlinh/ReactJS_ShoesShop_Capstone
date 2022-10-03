@@ -1,43 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setProductDeleteAction } from "../../redux/Reducers/productReducer";
 
 export default function Carts() {
+  const { productCart } = useSelector((state) => state.productReducer);
+  const [text, enableButton] = useState("");
+  const dispatch = useDispatch();
+  console.log("product Cart: ", productCart);
+
+  let handleDelete = (id) => {
+    let newArray = [...productCart];
+    let newProductCart = newArray.filter((item) => item.id !== id)   
+    const actioDelete = setProductDeleteAction(newProductCart);
+    dispatch(actioDelete);
+  }
+
+
+  let handleCheckEdit = (e) => {
+    enableButton(e.target.value);
+  }
+
   const renderCart = () => {
-    return (
-      <>
-        <tr className="cart-items text-center align-middle">
-          <td scope="row" className="checkbox col-1">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="checkboxNoLabel"
-              defaultValue
-              aria-label="..."
-              style={{ backgroundColor: "#6200EE", color: "white" }}
-            />
-          </td>
-          <td className="col-1 product-id">1</td>
-          <td className="col-1 product-img">
-            <img src="./images/image_5.png" alt="..." className="w-100" />
-          </td>
-          <td className="col-2 product-name">Product name 1</td>
-          <td className="col-1 product-price">1000</td>
-          <td className="col-2 product-volume">
-            <button className="btn btn-success rounded-0 py-1 control">
-              +
-            </button>
-            <button className="btn mx-2 quantity rounded-0">1</button>
-            <button className="btn btn-success rounded-0 pb-1 control">
-              -
-            </button>
-          </td>
-          <td className="col-1 product-total">100</td>
-          <td className="col-2 product-action">
-            <button className="btn rounded-0 text-white mx-3 edit">EDIT</button>
-            <button className="btn rounded-0 text-white delete">DELETE</button>
-          </td>
-        </tr>
-      </>
-    );
+    return productCart?.map((prodCart, index) => {
+      return (
+        <>
+          <tr className="cart-items text-center align-middle" key={index}>
+            <td scope="row" className="checkbox col-1">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="checkboxNoLabel"
+                value={prodCart?.id}
+                aria-label="..."
+                style={{ backgroundColor: "#6200EE", color: "white" }}
+                onChange={handleCheckEdit}
+              />
+            </td>
+            <td className="col-1 product-id">1</td>
+            <td className="col-1 product-img">
+              <img src={prodCart?.image} alt="..." className="w-100" />
+            </td>
+            <td className="col-2 product-name">{prodCart?.name}</td>
+            <td className="col-1 product-price">{prodCart?.price}</td>
+            <td className="col-2 product-volume">
+              <button className="btn btn-success rounded-0 py-1 control">
+                +
+              </button>
+              <button className="btn mx-2 quantity rounded-0">{prodCart?.quantity}</button>
+              <button className="btn btn-success rounded-0 pb-1 control">
+                -
+              </button>
+            </td>
+            <td className="col-1 product-total">{(prodCart?.quantity) * (prodCart?.price)}</td>
+            <td className="col-2 product-action">
+              <button className="btn rounded-0 text-white mx-3 edit" onClick={() => {
+                // handleEdit(prodCart?.id)
+              }}>
+                EDIT
+              </button>
+              <button className="btn rounded-0 text-white delete" onClick={() => {
+                handleDelete(prodCart?.id)
+              }}>
+                DELETE
+              </button>
+            </td>
+          </tr>
+        </>
+      );
+    });
   };
   return (
     <div className="container pb-5">
@@ -66,6 +96,7 @@ export default function Carts() {
                         backgroundColor: "#6200EE",
                         color: "white",
                       }}
+                      c
                     />
                   </div>
                 </th>
@@ -141,9 +172,7 @@ export default function Carts() {
                 </th>
               </tr>
             </thead>
-            <tbody className="cart-item-body">
-              {renderCart()}
-            </tbody>
+            <tbody className="cart-item-body">{renderCart()}</tbody>
           </table>
         </div>
       </div>
