@@ -5,14 +5,11 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import { getProductByNameAction } from "../../redux/Reducers/productReducer";
 import { PaginationSearch } from "./PaginationSearch";
 import SearchResult from "./SearchResult";
-import _, { set } from "lodash";
 
 let timeout = null;
-let select = 0;
 export default function Search() {
   const { productSearch } = useSelector((state) => state.productReducer);
-  let arrSort = [...productSearch];
-  // let [stateSelect, setStateSelect] = useState(0);
+
   const dispatch = useDispatch();
   const keywordRef = useRef("");
   const [searchParams, setSearchParams] = useSearchParams();
