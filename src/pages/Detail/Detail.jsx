@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetailApiAction } from "../../redux/Reducers/productReducer";
+import { getProductDetailApiAction, setProductCartAction } from "../../redux/Reducers/productReducer";
 
 export default function Detail() {
   const { productDetail } = useSelector((state) => state.productReducer);
+  let productCart = {...productDetail};
+  let [quantity, setQuantity] = useState(1);
+  productCart.quantity = quantity;
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,10 +22,11 @@ export default function Detail() {
     getProductDetailApi();
   }, [params.id]);
   
-  console.log("Id params: ", params.id);
-  console.log("Detail Page: ", productDetail);
   let icon = false;
-
+  console.log('Số lượng trước khi sửa: ', productCart.quantity);
+  
+  productCart = {...productCart,...productCart.quantity};
+  console.log('Số lượng sau khi sửa: ', productCart.quantity);
   const renderButton = () => {
     return productDetail?.size?.map((size, index) => {
       return (
@@ -32,6 +36,16 @@ export default function Detail() {
       );
     });
   };
+
+  const handleAddCart = () => {
+    const actionAddCart = setProductCartAction(productCart);
+    dispatch(actionAddCart);
+  };
+
+  useEffect(() => {
+    // handleAddCart();
+    setQuantity(1)
+  },[params.id])
 
   const renderProduct = () => {
     return (
@@ -50,11 +64,15 @@ export default function Detail() {
             <p className="price mt-2">{productDetail.price} $</p>
           </div>
           <div className="quantity my-2 d-flex">
-            <button className="btn btn-primary rounded-0 btnNumber">+</button>
-            <p className="volume text-center">1</p>
-            <button className="btn btn-primary rounded-0 btnNumber">-</button>
+            <button className="btn btn-primary rounded-0 btnNumber" onClick={() => {
+              setQuantity(quantity + 1);
+            }}>+</button>
+            <p className="volume text-center">{productCart.quantity}</p>
+            <button className="btn btn-primary rounded-0 btnNumber" onClick={() => {
+              setQuantity(quantity > 1 ? quantity - 1 : quantity);
+            }}>-</button>
           </div>
-          <button className="btn btn-primary rounded-0 text-white btnAdd">
+          <button className="btn btn-primary rounded-0 text-white btnAdd" onClick={handleAddCart}>
             Add to cart
           </button>
         </div>
