@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../assets/img/logo_1.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { getStore, getStoreJSON, USER_LOGIN } from "../../util/config";
 import { useSelector } from "react-redux";
 
@@ -28,6 +28,7 @@ export default function Header() {
       path: "/",
     },
   ];
+  const navigate = useNavigate();
 
   return (
     <>

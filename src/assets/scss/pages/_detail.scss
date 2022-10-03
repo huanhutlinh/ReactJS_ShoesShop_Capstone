@@ -2,9 +2,9 @@
 @import './../components/productfeature';
 .container{
     .product-detail{
-        height: 450px;
+        height: 500px;
         @include res-md{
-            height: 740px;
+            height: 860px;
         }
         .row{
             .product-img{

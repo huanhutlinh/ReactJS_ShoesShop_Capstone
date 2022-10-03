@@ -1,31 +1,53 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductDetailApiAction } from "../../redux/Reducers/productReducer";
+
 export default function Detail() {
+  const { productDetail } = useSelector((state) => state.productReducer);
+  const params = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const getProductDetailApi = async () => {
+    const actionThunk = getProductDetailApiAction(params.id);
+    dispatch(actionThunk);
+  };
+
+  useEffect(() => {
+    getProductDetailApi();
+  }, [params.id]);
+  
+  console.log("Id params: ", params.id);
+  console.log("Detail Page: ", productDetail);
   let icon = false;
+
+  const renderButton = () => {
+    return productDetail?.size?.map((size, index) => {
+      return (
+        <button className="btn btn-success me-2 rounded-0 btnSize" key={index}>
+          {size}
+        </button>
+      );
+    });
+  };
+
   const renderProduct = () => {
     return (
       <>
         <div className="product-img col-lg-7 col-md-12">
           <div className="product-img-around">
-            <img src="../images/image_5.png" />
+            <img src={productDetail?.image} />
           </div>
         </div>
         <div className="product-info col-lg-5 col-md-12">
           <div className="product-item">
-            <h5 className="title">Product Name</h5>
-            <p className="description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-              quis tempora quibusdam obcaecati ex provident, impedit pariatur
-              maiores facilis eligendi, tenetur deleniti? Voluptatibus
-              voluptatum facilis iusto fugiat, error veniam odio.
-            </p>
-            <p className="status">Product Status</p>
-            <div className="size">
-              <button className="btn btn-success me-2 rounded-0 btnSize">
-                43
-              </button>
-            </div>
-            <p className="price mt-2">85$</p>
+            <h5 className="title">{productDetail?.name}</h5>
+            <p className="description">{productDetail?.description}</p>
+            <p className="status">Available</p>
+            <div className="size">{renderButton()}</div>
+            <p className="price mt-2">{productDetail.price} $</p>
           </div>
           <div className="quantity my-2 d-flex">
             <button className="btn btn-primary rounded-0 btnNumber">+</button>
@@ -39,65 +61,70 @@ export default function Detail() {
       </>
     );
   };
+
   const renderRelateProduct = () => {
-    return (
-      <>
-        <div className="product">
-          <div className="row">
-            <div className="col-lg-4 col-md-6 product-item">
-              <div className="card rounded-0">
-                <div className="card-header">
-                  <img
-                    src="../images/image_5.png"
-                    className="w-100"
-                    alt="..."
-                  />
-                  <div className="icon" onClick={() => {}}>
-                    {icon === false ? (
-                      <i class="far fa-heart text-danger"></i>
-                    ) : (
-                      <i className="fas fa-heart text-danger"></i>
-                    )}
-                  </div>
-                </div>
-                <div className="card-body text-success">
-                  <h5 className="card-title">Product Name</h5>
-                  <p className="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                </div>
-                <div className="footer d-flex align-items-center">
-                  <span>
-                    <NavLink className="btn-buyNow text-center" to="/detail">
-                      Buy Now
-                    </NavLink>
-                  </span>
-                  <span>
-                    <NavLink className="btn-price text-center" to="/">
-                      85$
-                    </NavLink>
-                  </span>
-                </div>
+    return productDetail?.relatedProducts?.map((item, index) => {
+      return (
+        <div className="col-lg-4 col-md-6 product-item" key={index}>
+          <div className="card rounded-0">
+            <div className="card-header">
+              <img src={item?.image} className="w-100" alt="..." />
+              <div className="icon" onClick={() => {}}>
+                {icon === false ? (
+                  <i class="far fa-heart text-danger"></i>
+                ) : (
+                  <i className="fas fa-heart text-danger"></i>
+                )}
               </div>
+            </div>
+            <div className="card-body">
+              <h5 className="card-title">{item?.name}</h5>
+              <p className="card-text">
+                {item?.description.length > 70 ? item?.description.slice(1,70) + '...' : item?.description}
+              </p>
+            </div>
+            <div className="footer d-flex align-items-center">
+              <span>
+                <NavLink className="btn-buyNow text-center" to={`/detail/${item.id}`}>
+                  Buy Now
+                </NavLink>
+              </span>
+              <span>
+                <NavLink className="btn-price text-center" to="/">
+                  85$
+                </NavLink>
+              </span>
             </div>
           </div>
         </div>
-      </>
-    );
+      );
+    });
   };
   return (
     <>
-      <div className="container mt-5">
+      <div className="container mt-5 mb-5">
         <div className="product-detail">
           <div className="row">{renderProduct()}</div>
         </div>
         <div className="relate-product">
           <div className="title-product">
-            <h3 className="text-center" style={{fontSize:'40px', fontWeight:'400', lineHeight:'48px'}}>- Relate Product -</h3>
+            <h3
+              className="text-center"
+              style={{
+                fontSize: "40px",
+                fontWeight: "400",
+                lineHeight: "48px",
+              }}
+            >
+              - Relate Product -
+            </h3>
           </div>
           <div className="product-feature mt-3">
-            {renderRelateProduct()}
+            <div className="product">
+              <div className="row">
+                {renderRelateProduct()}
+              </div>
+            </div>
           </div>
         </div>
       </div>

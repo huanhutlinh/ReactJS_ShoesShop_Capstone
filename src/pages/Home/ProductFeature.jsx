@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-export default function ProductFeature() {
+const ProductFeature = ({datProduct}) => {
   let [icon, setIcon] = useState();
   let handleClick = () => {
     
   }
-  console.log(icon)
+
   return (
     <div className="product-feature container">
       <div className="product-feature-title">
@@ -18,7 +18,7 @@ export default function ProductFeature() {
         </h2>
       </div>
       <div className="product">
-        <div className="row">
+        {/* <div className="row">
           <div className="col-lg-4 col-md-6 product-item">
             <div className="card rounded-0">
               <div className="card-header">
@@ -41,8 +41,10 @@ export default function ProductFeature() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
 }
+
+export default ProductFeature;

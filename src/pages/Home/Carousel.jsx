@@ -1,6 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function Carousel() {
+  const { dataCarousel } = useSelector((state) => state.productReducer);
+  const [item1, item2, item3] = dataCarousel;
+
   return (
     <div className="container">
       <div
@@ -34,13 +38,12 @@ export default function Carousel() {
           <div className="carousel-item active">
             <div className="carousel-content d-flex align-items-center">
               <div className="carousel-img">
-                <img src="./images/image_5.png" className="d-block" alt="..." />
+                <img src={item1.image} className="d-block" alt="..." />
               </div>
               <div className="carousel-product">
-                <h3>Product Name</h3>
+                <h3>{item1.name}</h3>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Obcaecati adipisci optio .....{" "}
+                  {item1.shortDescription}
                 </p>
                 <button className="btn btn-success rounded-0">BuyNow</button>
               </div>
@@ -49,11 +52,13 @@ export default function Carousel() {
           <div className="carousel-item">
             <div className="carousel-content d-flex align-items-center">
               <div className="carousel-img">
-                <img src="./images/image_5.png" className="d-block" alt="..." />
+                <img src={item2.image} className="d-block" alt="..." />
               </div>
               <div className="carousel-product">
-                <h3>Product Name</h3>
-                <p>Product Description</p>
+                <h3>{item2.name}</h3>
+                <p>
+                  {item2.shortDescription}
+                </p>
                 <button className="btn btn-danger rounded-0">BuyNow</button>
               </div>
             </div>
@@ -61,12 +66,16 @@ export default function Carousel() {
           <div className="carousel-item">
             <div className="carousel-content d-flex align-items-center">
               <div className="carousel-img">
-                <img src="./images/image_5.png" className="d-block" alt="..." />
+                <img src={item3.image} className="d-block" alt="..." />
               </div>
               <div className="carousel-product">
-                <h3>Product Name</h3>
-                <p>Product Description</p>
-                <button className="btn btn-warning rounded-0 text-white">BuyNow</button>
+                <h3>{item3.name}</h3>
+                <p>
+                  {item3.shortDescription}
+                </p>
+                <button className="btn btn-warning rounded-0 text-white">
+                  BuyNow
+                </button>
               </div>
             </div>
           </div>
