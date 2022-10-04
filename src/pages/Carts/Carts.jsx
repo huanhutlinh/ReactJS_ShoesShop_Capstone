@@ -91,6 +91,7 @@ export default function Carts() {
   }
 
   const handleOrderProduct = async () => {
+    console.log('submit oder', orderDetail)
     postOderAPI(orderDetail);
   };
 

@@ -6,12 +6,14 @@ import {
   setStore,
   setStoreJSON,
   USER_LOGIN,
+  getStore
 } from "../../util/config";
 
 const initialState = {
   userLogin: localStorage.getItem(USER_LOGIN)
     ? JSON.parse(localStorage.getItem(USER_LOGIN))
     : null,
+  order: [],
 };
 
 const userReducer = createSlice({
@@ -21,10 +23,14 @@ const userReducer = createSlice({
     setUserLoginAction: (state, action) => {
       state.userLogin = action.payload;
     },
+    setOrderHistoryAction: (state, action) => {
+      let orderArr = action.payload;
+      state.order = orderArr;
+    }
   },
 });
 
-export const { setUserLoginAction, userLogin } = userReducer.actions;
+export const { setUserLoginAction, userLogin, setOrderHistoryAction } = userReducer.actions;
 
 export default userReducer.reducer;
 
@@ -63,5 +69,22 @@ export const postOderAPI = async (order) => {
     console.log(result);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const getProfileApi = async (dispatch) => {
+  try {
+    const result = await axios({
+      url: "https://shop.cyberlearn.vn/api/Users/getProfile",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${getStore(ACCESS_TOKEN)}`,
+      },
+    });
+    const action = setOrderHistoryAction(result.data.content);
+    dispatch(action);
+    console.log(result.data.content);
+  } catch (error) {
+    console.log(error);
   }
 };

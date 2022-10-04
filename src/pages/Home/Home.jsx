@@ -28,7 +28,7 @@ export default function Home() {
   useEffect(() => {
     getPostPage();
   }, [currentPage]);
-
+  
   const renderProduct = () => {
     return dataProduct?.map((item, index) => {
       return (
@@ -42,9 +42,9 @@ export default function Home() {
               />
               <div
                 className="icon"
-                onClick={() => {
-                  // handleClick();
-                }}
+                // onClick={() => {
+                //   handleClickFavorite();
+                // }}
               >
                 {icon === false ? (
                   <i class="far fa-heart text-danger"></i>
@@ -80,6 +80,7 @@ export default function Home() {
   };
 
   console.log("dataProduct: ", dataProduct);
+
   return (
     <div className="container">
       {/* Carousel */}

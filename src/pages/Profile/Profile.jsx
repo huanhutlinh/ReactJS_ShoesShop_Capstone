@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import {
+  getProfileApi,
+  setOrderHistoryAction,
+} from "../../redux/Reducers/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 export default function Profile() {
+  const { userLogin, order } = useSelector((state) => state.userReducer);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userLogin) {
+      const actionThunk = getProfileApi;
+      dispatch(actionThunk);
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
+  // console.log("Debug Order: ", order.ordersHistory);
+  // let newOrder = order.ordersHistory.map((item, index) => {
+  //   console.log("Date: ", item.date);
+  //   return item.orderDetail.map((prod, key) => {
+  //     return prod;
+  //   });
+  // });
+  // console.log("Debug newOrder: ", newOrder);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -47,22 +75,110 @@ export default function Profile() {
   });
 
   const renderCart = () => {
-    return (
-      <>
-        <tr className="cart-items text-center align-middle">
-          <td className="col-1 product-id">1</td>
-          <td className="col-1 product-img">
-            <img src="./images/image_5.png" alt="..." className="w-100" />
-          </td>
-          <td className="col-2 product-name">Product name 1</td>
-          <td className="col-1 product-price">1000</td>
-          <td className="col-2 product-volume">
-            <button className="btn mx-2 quantity rounded-0">1</button>
-          </td>
-          <td className="col-1 product-total">100</td>
-        </tr>
-      </>
-    );
+    return order?.ordersHistory?.map((item, index) => {
+      return (
+        <div key={index}>
+          <h5 className="text-success">
+            + Orders have been placed on {item?.date}
+          </h5>
+          <table className="table">
+            <thead
+              className="text-center cart-item-head"
+              style={{ background: "#D9D9D9" }}
+            >
+              <tr>
+                <th
+                  scope="col"
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "24.2px",
+                  }}
+                >
+                  Id
+                </th>
+                <th
+                  scope="col"
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "24.2px",
+                  }}
+                >
+                  Img
+                </th>
+                <th
+                  scope="col"
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "24.2px",
+                  }}
+                >
+                  Name
+                </th>
+                <th
+                  scope="col"
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "24.2px",
+                  }}
+                >
+                  Price
+                </th>
+                <th
+                  scope="col"
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "24.2px",
+                  }}
+                >
+                  Quantity
+                </th>
+                <th
+                  scope="col"
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "24.2px",
+                  }}
+                >
+                  Total
+                </th>
+              </tr>
+            </thead>
+            <tbody className="cart-item-body">
+              {item?.orderDetail?.map((prod, index) => {
+                return (
+                  <>
+                    <tr className="cart-items text-center align-middle" key={index}>
+                      <td className="col-1 product-id">{item?.id}</td>
+                      <td className="col-1 product-img">
+                        <img
+                          src={prod?.image}
+                          alt="..."
+                          className="w-100"
+                        />
+                      </td>
+                      <td className="col-2 product-name">{prod?.name}</td>
+                      <td className="col-1 product-price">{prod?.price}</td>
+                      <td className="col-2 product-volume">
+                        <button className="btn mx-2 quantity rounded-0">
+                          {prod?.quantity}
+                        </button>
+                      </td>
+                      <td className="col-1 product-total">{prod?.quantity * prod?.price}</td>
+                    </tr>
+                  </>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      );
+    });
   };
 
   return (
@@ -206,81 +322,7 @@ export default function Profile() {
       </div>
       <div className="container my-5">
         <div className="cart-body mx-5">
-          <div class="table-responsive cart-detail">
-            <h5 className="text-success">
-              + Orders have been placed on 09 - 19 - 2020
-            </h5>
-            <table className="table">
-              <thead
-                className="text-center cart-item-head"
-                style={{ background: "#D9D9D9" }}
-              >
-                <tr>
-                  <th
-                    scope="col"
-                    style={{
-                      fontWeight: "400",
-                      fontSize: "20px",
-                      lineHeight: "24.2px",
-                    }}
-                  >
-                    Id
-                  </th>
-                  <th
-                    scope="col"
-                    style={{
-                      fontWeight: "400",
-                      fontSize: "20px",
-                      lineHeight: "24.2px",
-                    }}
-                  >
-                    Img
-                  </th>
-                  <th
-                    scope="col"
-                    style={{
-                      fontWeight: "400",
-                      fontSize: "20px",
-                      lineHeight: "24.2px",
-                    }}
-                  >
-                    Name
-                  </th>
-                  <th
-                    scope="col"
-                    style={{
-                      fontWeight: "400",
-                      fontSize: "20px",
-                      lineHeight: "24.2px",
-                    }}
-                  >
-                    Price
-                  </th>
-                  <th
-                    scope="col"
-                    style={{
-                      fontWeight: "400",
-                      fontSize: "20px",
-                      lineHeight: "24.2px",
-                    }}
-                  >
-                    Quantity
-                  </th>
-                  <th
-                    scope="col"
-                    style={{
-                      fontWeight: "400",
-                      fontSize: "20px",
-                      lineHeight: "24.2px",
-                    }}
-                  >
-                    Total
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="cart-item-body">{renderCart()}</tbody>
-            </table>
-          </div>
+          <div class="table-responsive cart-detail">{renderCart()}</div>
         </div>
       </div>
     </>

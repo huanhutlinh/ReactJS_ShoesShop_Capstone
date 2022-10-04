@@ -1,0 +1,246 @@
+From b731697d53898e615156aeea72e906d7cbd774bd Mon Sep 17 00:00:00 2001
+From: Linhdong <kn.durian.sweet@gmail.com>
+Date: Tue, 4 Oct 2022 11:17:22 +0800
+Subject: [PATCH] update cart page
+
+---
+ src/components/Header/Header.jsx      |  3 +-
+ src/pages/Carts/Carts.jsx             | 76 +++++++++++++++++++--------
+ src/pages/Detail/Detail.jsx           |  4 +-
+ src/redux/Reducers/productReducer.jsx | 14 +++--
+ src/redux/Reducers/userReducer.jsx    |  3 +-
+ 5 files changed, 71 insertions(+), 29 deletions(-)
+
+diff --git a/src/components/Header/Header.jsx b/src/components/Header/Header.jsx
+index 76b9633..e22b217 100644
+--- a/src/components/Header/Header.jsx
++++ b/src/components/Header/Header.jsx
+@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
+ 
+ export default function Header() {
+   const user = useSelector((state) => state.userReducer.userLogin);
++  const {quantityProduct} = useSelector((state) => state.productReducer)
+   const navLinks = [
+     {
+       title: "Home",
+@@ -61,7 +62,7 @@ export default function Header() {
+                   to="/carts"
+                 >
+                   <i className="fas fa-cart-plus mr-2"></i>
+-                  <p className="my-1">(1)</p>
++                  <p className="my-1">({quantityProduct})</p>
+                 </NavLink>
+               </li>
+               <li class="nav-item">
+diff --git a/src/pages/Carts/Carts.jsx b/src/pages/Carts/Carts.jsx
+index 5b2db43..8b38ca7 100644
+--- a/src/pages/Carts/Carts.jsx
++++ b/src/pages/Carts/Carts.jsx
+@@ -1,24 +1,30 @@
+-import React, { useState } from "react";
++import React, { useEffect, useState } from "react";
+ import { useDispatch, useSelector } from "react-redux";
+-import { setProductDeleteAction } from "../../redux/Reducers/productReducer";
++import { useNavigate } from "react-router-dom";
++import { setProductDeleteAction, setQuantityProductAction } from "../../redux/Reducers/productReducer";
++import { postOderAPI } from "../../redux/Reducers/userReducer";
++import { getStore, ACCESS_TOKEN } from "../../util/config";
+ 
+ export default function Carts() {
+-  const { productCart } = useSelector((state) => state.productReducer);
+-  const [text, enableButton] = useState("");
++  const { productCart, quantityProduct} = useSelector((state) => state.productReducer);
++  const { userLogin } = useSelector((state) => state.userReducer);
+   const dispatch = useDispatch();
+-  console.log("product Cart: ", productCart);
++  const navigate = useNavigate();
++  console.log("Quantity Cart: ", quantityProduct);
++
++  useEffect(() => {
++    if(!getStore(ACCESS_TOKEN)){
++      alert('Vui lòng đăng nhập ');
++      navigate('/login');
++    }
++  }, [])
+ 
+   let handleDelete = (id) => {
+     let newArray = [...productCart];
+-    let newProductCart = newArray.filter((item) => item.id !== id)   
++    let newProductCart = newArray.filter((item) => item.id !== id);
+     const actioDelete = setProductDeleteAction(newProductCart);
+     dispatch(actioDelete);
+-  }
+-
+-
+-  let handleCheckEdit = (e) => {
+-    enableButton(e.target.value);
+-  }
++  };
+ 
+   const renderCart = () => {
+     return productCart?.map((prodCart, index) => {
+@@ -33,10 +39,9 @@ export default function Carts() {
+                 value={prodCart?.id}
+                 aria-label="..."
+                 style={{ backgroundColor: "#6200EE", color: "white" }}
+-                onChange={handleCheckEdit}
+               />
+             </td>
+-            <td className="col-1 product-id">1</td>
++            <td className="col-1 product-id">{prodCart?.id}</td>
+             <td className="col-1 product-img">
+               <img src={prodCart?.image} alt="..." className="w-100" />
+             </td>
+@@ -46,21 +51,29 @@ export default function Carts() {
+               <button className="btn btn-success rounded-0 py-1 control">
+                 +
+               </button>
+-              <button className="btn mx-2 quantity rounded-0">{prodCart?.quantity}</button>
++              <button className="btn mx-2 quantity rounded-0">
++                {prodCart?.quantity}
++              </button>
+               <button className="btn btn-success rounded-0 pb-1 control">
+                 -
+               </button>
+             </td>
+-            <td className="col-1 product-total">{(prodCart?.quantity) * (prodCart?.price)}</td>
++            <td className="col-1 product-total">
++              {prodCart?.quantity * prodCart?.price}
++            </td>
+             <td className="col-2 product-action">
+-              <button className="btn rounded-0 text-white mx-3 edit" onClick={() => {
+-                // handleEdit(prodCart?.id)
+-              }}>
++              <button
++                className="btn rounded-0 text-white mx-3 edit"
++                onClick={() => {}}
++              >
+                 EDIT
+               </button>
+-              <button className="btn rounded-0 text-white delete" onClick={() => {
+-                handleDelete(prodCart?.id)
+-              }}>
++              <button
++                className="btn rounded-0 text-white delete"
++                onClick={() => {
++                  handleDelete(prodCart?.id);
++                }}
++              >
+                 DELETE
+               </button>
+             </td>
+@@ -69,6 +82,18 @@ export default function Carts() {
+       );
+     });
+   };
++
++  let orderProduct = productCart.map((item, index) => ({...item, productId: item.id}));
++
++  const orderDetail = {
++    orderDetail: orderProduct,
++    email: userLogin?.email
++  }
++
++  const handleOrderProduct = async () => {
++    postOderAPI(orderDetail);
++  };
++
+   return (
+     <div className="container pb-5">
+       <div className="title px-5 mb-5">
+@@ -177,7 +202,12 @@ export default function Carts() {
+         </div>
+       </div>
+       <div className="cart-footer px-5 d-flex flex-row-reverse">
+-        <button className="btn btn-warning rounded-0 text-white">
++        <button
++          className="btn btn-warning rounded-0 text-white"
++          onClick={() => {
++            handleOrderProduct();
++          }}
++        >
+           Submit order
+         </button>
+       </div>
+diff --git a/src/pages/Detail/Detail.jsx b/src/pages/Detail/Detail.jsx
+index 0a44e37..9cc7bcc 100644
+--- a/src/pages/Detail/Detail.jsx
++++ b/src/pages/Detail/Detail.jsx
+@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
+ import { NavLink, useParams } from "react-router-dom";
+ import { useNavigate } from "react-router-dom";
+ import { useDispatch, useSelector } from "react-redux";
+-import { getProductDetailApiAction, setProductCartAction } from "../../redux/Reducers/productReducer";
++import { getProductDetailApiAction, setProductCartAction, setQuantityProductAction } from "../../redux/Reducers/productReducer";
+ 
+ export default function Detail() {
+   const { productDetail } = useSelector((state) => state.productReducer);
+@@ -40,6 +40,8 @@ export default function Detail() {
+   const handleAddCart = () => {
+     const actionAddCart = setProductCartAction(productCart);
+     dispatch(actionAddCart);
++    const actionQuantity = setQuantityProductAction(productCart.quantity);
++    dispatch(actionQuantity);
+   };
+ 
+   useEffect(() => {
+diff --git a/src/redux/Reducers/productReducer.jsx b/src/redux/Reducers/productReducer.jsx
+index 0c0d369..139f2df 100644
+--- a/src/redux/Reducers/productReducer.jsx
++++ b/src/redux/Reducers/productReducer.jsx
+@@ -27,7 +27,8 @@ const initialState = {
+     ],
+     productDetail: [],
+     productSearch: [],
+-    productCart: []
++    productCart: [],
++    quantityProduct: 0,
+ }
+ 
+ const productReducer = createSlice({
+@@ -59,12 +60,19 @@ const productReducer = createSlice({
+         setProductDeleteAction: (state, action) => {
+           const newProductCart = action.payload;
+           state.productCart = newProductCart;
++          let newQuantity = newProductCart.reduce((sl,sanPham, index) => {
++            return sl += sanPham.quantity;
++          },0);
++          state.quantityProduct = newQuantity;
++        },
++        setQuantityProductAction: (state, action) => {
++          const quantity = action.payload;
++          state.quantityProduct += quantity;
+         }
+-        
+   }
+ });
+ 
+-export const {setGetPostPageAction, setProductDetailAction, setProductSearchAction, setProductCartAction, setProductDeleteAction} = productReducer.actions
++export const {setGetPostPageAction, setProductDetailAction, setProductSearchAction, setProductCartAction, setProductDeleteAction, setQuantityProductAction} = productReducer.actions
+ 
+ export default productReducer.reducer
+ /*========================== Action API ========================== */
+diff --git a/src/redux/Reducers/userReducer.jsx b/src/redux/Reducers/userReducer.jsx
+index 022ede9..2c636a8 100644
+--- a/src/redux/Reducers/userReducer.jsx
++++ b/src/redux/Reducers/userReducer.jsx
+@@ -24,7 +24,7 @@ const userReducer = createSlice({
+   },
+ });
+ 
+-export const { setUserLoginAction } = userReducer.actions;
++export const { setUserLoginAction, userLogin } = userReducer.actions;
+ 
+ export default userReducer.reducer;
+ 
+@@ -52,6 +52,7 @@ export const signInAPI = (userLogin) => {
+ };
+ 
+ export const postOderAPI = async (order) => {
++  
+   try {
+     const result = await axios({
+       url: "https://shop.cyberlearn.vn/api/Users/order",
+-- 
+2.36.0.windows.1
+
