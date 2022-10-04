@@ -1,24 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setProductDeleteAction } from "../../redux/Reducers/productReducer";
+import { useNavigate } from "react-router-dom";
+import { setProductDeleteAction, setQuantityProductAction } from "../../redux/Reducers/productReducer";
+import { postOderAPI } from "../../redux/Reducers/userReducer";
+import { getStore, ACCESS_TOKEN } from "../../util/config";
 
 export default function Carts() {
-  const { productCart } = useSelector((state) => state.productReducer);
-  const [text, enableButton] = useState("");
+  const { productCart, quantityProduct} = useSelector((state) => state.productReducer);
+  const { userLogin } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
-  console.log("product Cart: ", productCart);
+  const navigate = useNavigate();
+  console.log("Quantity Cart: ", quantityProduct);
+
+  useEffect(() => {
+    if(!getStore(ACCESS_TOKEN)){
+      alert('Vui lòng đăng nhập ');
+      navigate('/login');
+    }
+  }, [])
 
   let handleDelete = (id) => {
     let newArray = [...productCart];
-    let newProductCart = newArray.filter((item) => item.id !== id)   
+    let newProductCart = newArray.filter((item) => item.id !== id);
     const actioDelete = setProductDeleteAction(newProductCart);
     dispatch(actioDelete);
-  }
-
-
-  let handleCheckEdit = (e) => {
-    enableButton(e.target.value);
-  }
+  };
 
   const renderCart = () => {
     return productCart?.map((prodCart, index) => {
@@ -33,10 +39,9 @@ export default function Carts() {
                 value={prodCart?.id}
                 aria-label="..."
                 style={{ backgroundColor: "#6200EE", color: "white" }}
-                onChange={handleCheckEdit}
               />
             </td>
-            <td className="col-1 product-id">1</td>
+            <td className="col-1 product-id">{prodCart?.id}</td>
             <td className="col-1 product-img">
               <img src={prodCart?.image} alt="..." className="w-100" />
             </td>
@@ -46,21 +51,29 @@ export default function Carts() {
               <button className="btn btn-success rounded-0 py-1 control">
                 +
               </button>
-              <button className="btn mx-2 quantity rounded-0">{prodCart?.quantity}</button>
+              <button className="btn mx-2 quantity rounded-0">
+                {prodCart?.quantity}
+              </button>
               <button className="btn btn-success rounded-0 pb-1 control">
                 -
               </button>
             </td>
-            <td className="col-1 product-total">{(prodCart?.quantity) * (prodCart?.price)}</td>
+            <td className="col-1 product-total">
+              {prodCart?.quantity * prodCart?.price}
+            </td>
             <td className="col-2 product-action">
-              <button className="btn rounded-0 text-white mx-3 edit" onClick={() => {
-                // handleEdit(prodCart?.id)
-              }}>
+              <button
+                className="btn rounded-0 text-white mx-3 edit"
+                onClick={() => {}}
+              >
                 EDIT
               </button>
-              <button className="btn rounded-0 text-white delete" onClick={() => {
-                handleDelete(prodCart?.id)
-              }}>
+              <button
+                className="btn rounded-0 text-white delete"
+                onClick={() => {
+                  handleDelete(prodCart?.id);
+                }}
+              >
                 DELETE
               </button>
             </td>
@@ -69,6 +82,18 @@ export default function Carts() {
       );
     });
   };
+
+  let orderProduct = productCart.map((item, index) => ({...item, productId: item.id}));
+
+  const orderDetail = {
+    orderDetail: orderProduct,
+    email: userLogin?.email
+  }
+
+  const handleOrderProduct = async () => {
+    postOderAPI(orderDetail);
+  };
+
   return (
     <div className="container pb-5">
       <div className="title px-5 mb-5">
@@ -177,7 +202,12 @@ export default function Carts() {
         </div>
       </div>
       <div className="cart-footer px-5 d-flex flex-row-reverse">
-        <button className="btn btn-warning rounded-0 text-white">
+        <button
+          className="btn btn-warning rounded-0 text-white"
+          onClick={() => {
+            handleOrderProduct();
+          }}
+        >
           Submit order
         </button>
       </div>

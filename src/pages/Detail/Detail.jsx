@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetailApiAction, setProductCartAction } from "../../redux/Reducers/productReducer";
+import { getProductDetailApiAction, setProductCartAction, setQuantityProductAction } from "../../redux/Reducers/productReducer";
 
 export default function Detail() {
   const { productDetail } = useSelector((state) => state.productReducer);
@@ -40,6 +40,8 @@ export default function Detail() {
   const handleAddCart = () => {
     const actionAddCart = setProductCartAction(productCart);
     dispatch(actionAddCart);
+    const actionQuantity = setQuantityProductAction(productCart.quantity);
+    dispatch(actionQuantity);
   };
 
   useEffect(() => {
