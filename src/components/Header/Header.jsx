@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 export default function Header() {
   const user = useSelector((state) => state.userReducer.userLogin);
+  const {quantityProduct} = useSelector((state) => state.productReducer)
   const navLinks = [
     {
       title: "Home",
@@ -61,7 +62,7 @@ export default function Header() {
                   to="/carts"
                 >
                   <i className="fas fa-cart-plus mr-2"></i>
-                  <p className="my-1">(1)</p>
+                  <p className="my-1">({quantityProduct})</p>
                 </NavLink>
               </li>
               <li class="nav-item">
