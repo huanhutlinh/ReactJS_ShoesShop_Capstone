@@ -24,7 +24,7 @@ const userReducer = createSlice({
   },
 });
 
-export const { setUserLoginAction } = userReducer.actions;
+export const { setUserLoginAction, userLogin } = userReducer.actions;
 
 export default userReducer.reducer;
 
@@ -52,6 +52,7 @@ export const signInAPI = (userLogin) => {
 };
 
 export const postOderAPI = async (order) => {
+  
   try {
     const result = await axios({
       url: "https://shop.cyberlearn.vn/api/Users/order",

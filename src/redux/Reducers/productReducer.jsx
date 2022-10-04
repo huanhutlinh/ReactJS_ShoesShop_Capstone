@@ -27,7 +27,8 @@ const initialState = {
     ],
     productDetail: [],
     productSearch: [],
-    productCart: []
+    productCart: [],
+    quantityProduct: 0,
 }
 
 const productReducer = createSlice({
@@ -59,12 +60,19 @@ const productReducer = createSlice({
         setProductDeleteAction: (state, action) => {
           const newProductCart = action.payload;
           state.productCart = newProductCart;
+          let newQuantity = newProductCart.reduce((sl,sanPham, index) => {
+            return sl += sanPham.quantity;
+          },0);
+          state.quantityProduct = newQuantity;
+        },
+        setQuantityProductAction: (state, action) => {
+          const quantity = action.payload;
+          state.quantityProduct += quantity;
         }
-        
   }
 });
 
-export const {setGetPostPageAction, setProductDetailAction, setProductSearchAction, setProductCartAction, setProductDeleteAction} = productReducer.actions
+export const {setGetPostPageAction, setProductDetailAction, setProductSearchAction, setProductCartAction, setProductDeleteAction, setQuantityProductAction} = productReducer.actions
 
 export default productReducer.reducer
 /*========================== Action API ========================== */
